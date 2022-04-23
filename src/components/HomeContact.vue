@@ -4,7 +4,7 @@
       <v-container>
         <v-row>
           <v-col cols="12" sm="6">
-            <h1 >{{ count }} Contact(s)</h1>
+            <h1>{{ count }} Contact(s)</h1>
           </v-col>
 
           <v-col cols="12" sm="6">
@@ -27,17 +27,26 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+
 import _ from "lodash";
 import axios from "axios";
 import OneContact from "./OneContact.vue";
 import { useStorage } from "@vueuse/core";
+import { ref } from "@vue/composition-api";
 
 export default Vue.extend({
   name: "HomeContact",
 
   components: { OneContact },
   // bind object
+  // setup() {
 
+  //   const change = ref(null);
+  //   const
+  //    contacts = ref([] as any);
+  //   const count = ref(null);
+  //   return { change, contacts, count };
+  // },
   data: () => ({
     loading: false,
     selection: 1,
@@ -51,8 +60,11 @@ export default Vue.extend({
   methods: {
     // if clear is called
     restore(): any {
-      this.contacts = JSON.parse(localStorage.getItem("allContact")) as unknown;
-      return;
+      const array: any = JSON.parse(
+        localStorage.getItem("allContact") as string
+      );
+      this.contacts = array as unknown;
+      return this.contacts;
     },
     //get data from api
     async fetchData(): Promise<any> {
@@ -78,7 +90,7 @@ export default Vue.extend({
             item.last_name.toLowerCase().includes(this.change)
         );
         this.contacts = filter;
-        this.count = this.contacts.length
+        this.count = this.contacts.length;
         return this.contacts;
       } else {
         this.restore();
