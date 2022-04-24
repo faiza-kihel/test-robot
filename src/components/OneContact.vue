@@ -28,7 +28,7 @@
 
           <v-card-text>
             <!-- subtitle EMAIL -->
-            <div class="my-0 text-subtitle-1">
+            <div class="my-0">
               <v-icon> mdi-email </v-icon> {{ contact.email }}
             </div>
           </v-card-text>
@@ -54,3 +54,9 @@ export default Vue.extend({
   },
 });
 </script>
+<style scoped>
+.v-sheet.v-card:hover {
+  box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%), 0 8px 10px 1px rgb(0 0 0 / 14%),
+    0 3px 14px 2px rgb(0 0 0 / 12%);
+}
+</style>

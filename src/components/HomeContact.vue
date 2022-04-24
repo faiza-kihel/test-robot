@@ -56,7 +56,7 @@ export default Vue.extend({
     const contacts = ref([] as any);
     const count = ref(null);
     const isLoading = ref(true);
-    
+
     //mounted function for get data from Api
     onMounted(async () => {
       axios("https://random-data-api.com/api/users/random_user?size=100").then(
@@ -88,11 +88,12 @@ export default Vue.extend({
         const filter: any = _.filter(
           contacts.value,
           (item: any) =>
-            item.first_name.toUpperCase().includes(change.value) ||
-            item.last_name.toUpperCase().includes(change.value) ||
+            item.first_name.includes(change.value) ||
             item.first_name.toLowerCase().includes(change.value) ||
+            item.last_name.includes(change.value) ||
             item.last_name.toLowerCase().includes(change.value)
         );
+
         contacts.value = filter;
         isLoading.value = false;
         count.value = contacts.value.length;

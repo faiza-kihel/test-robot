@@ -97,7 +97,7 @@ export default Vue.extend({
       //get id params
       const prs: any = Number(router.app.$route.params.id);
       params.value = prs;
-      console.log("params", params);
+
       //get contact by
       await axios(
         ` https://random-data-api.com/api/users/random_user?id=${params.value}`
