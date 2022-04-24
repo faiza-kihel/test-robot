@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">Contact App By KF</div>
+      <div class="d-flex align-center v-toolbar__title">Contact App By KF</div>
 
       <v-spacer></v-spacer>
     </v-app-bar>
