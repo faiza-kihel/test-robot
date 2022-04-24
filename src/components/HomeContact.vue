@@ -20,9 +20,10 @@
         </v-row>
       </v-container>
     </v-form>
-    <div v-if="contacts.length > 0">
-      <OneContact :contacts="this.contacts" />
-    </div>
+    <OneContact :contacts="userContacts" />
+    <!-- <div v-if="contacts.length > 0">
+     
+    </div> -->
   </div>
 </template>
 <script lang="ts">
@@ -32,70 +33,66 @@ import _ from "lodash";
 import axios from "axios";
 import OneContact from "./OneContact.vue";
 import { useStorage } from "@vueuse/core";
-import { ref } from "@vue/composition-api";
+import { onMounted, ref } from "@vue/composition-api";
 
 export default Vue.extend({
-  name: "HomeContact",
+  //name: "HomeContact",
 
   components: { OneContact },
-  // bind object
-  // setup() {
 
-  //   const change = ref(null);
-  //   const
-  //    contacts = ref([] as any);
-  //   const count = ref(null);
-  //   return { change, contacts, count };
-  // },
-  data: () => ({
-    loading: false,
-    selection: 1,
-    change: null,
-    contacts: [] as any,
-    count: null,
-  }),
-  created(): void {
-    this.fetchData();
-  },
-  methods: {
-    // if clear is called
-    restore(): any {
+  // bind object
+  setup() {
+    // init varriable
+    const change = ref(null);
+    const contacts = ref([] as any);
+    const count = ref(null);
+
+    //mounted function for get data from Api
+    onMounted(async () => {
+      axios("https://random-data-api.com/api/users/random_user?size=100").then(
+        (res: any) => {
+          contacts.value = res.data;
+
+          // stock data to local storage
+          useStorage("allContact", contacts.value);
+          count.value = contacts.value.length;
+        }
+      );
+    });
+
+    // call if clear is clicked
+    function restore() {
       const array: any = JSON.parse(
         localStorage.getItem("allContact") as string
       );
-      this.contacts = array as unknown;
-      return this.contacts;
-    },
-    //get data from api
-    async fetchData(): Promise<any> {
-      await axios(
-        "https://random-data-api.com/api/users/random_user?size=100"
-      ).then((res: any) => {
-        this.contacts = res.data;
-        // stock data to local storage
-        useStorage("allContact", this.contacts);
-        this.count = this.contacts.length;
-        return this.contacts;
-      });
-    },
-    //if filter is called
-    onChange() {
-      if (this.change) {
+      contacts.value = array as unknown;
+    }
+    //call if input is changed
+    async function onChange(): Promise<any> {
+      if (change.value) {
         const filter: any = _.filter(
-          this.contacts,
+          contacts.value,
           (item: any) =>
-            item.first_name.toUpperCase().includes(this.change) ||
-            item.last_name.toUpperCase().includes(this.change) ||
-            item.first_name.toLowerCase().includes(this.change) ||
-            item.last_name.toLowerCase().includes(this.change)
+            item.first_name.toUpperCase().includes(change.value) ||
+            item.last_name.toUpperCase().includes(change.value) ||
+            item.first_name.toLowerCase().includes(change.value) ||
+            item.last_name.toLowerCase().includes(change.value)
         );
-        this.contacts = filter;
-        this.count = this.contacts.length;
-        return this.contacts;
+        contacts.value = filter;
+        count.value = contacts.length;
+        return { contacts, count };
       } else {
-        this.restore();
+        restore();
       }
-    },
+    }
+    //return data
+    return {
+      change,
+      userContacts: contacts,
+      count,
+      restore,
+      onChange,
+    };
   },
 });
 </script>

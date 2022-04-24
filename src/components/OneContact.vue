@@ -42,14 +42,9 @@
 import Vue from "vue";
 export default Vue.extend({
   name: "App",
-
   components: {},
-  props: {
-    contacts: Array,
+  setup(props) {
+    console.log("props", props.contacts);
   },
-  data: () => ({
-    loading: false,
-    selection: 1,
-  }),
 });
 </script>

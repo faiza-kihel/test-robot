@@ -93,43 +93,46 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
+import { computed, ref } from "@vue/composition-api";
+//import { useRoute, Route } from 'vue-router'
 export default Vue.extend({
   name: "DetailContact",
   components: {},
-  data: () => ({
-    loading: false,
-    contact: {},
-    params: null as any,
-  }),
-  computed: {
-    id() {
-      // We will see what `params` is shortly
-      console.log("i am hear", this.$route.params.id);
-      return this.$route.params.id;
-    },
+  setup() {
+    const conatct = ref({});
+    const params = ref(null as any);
+    //get id params
+    const id = computed(function () {
+      // const route :any;
+      // return route.params.value.id;
+    });
+
+    return {
+      id: id,
+    };
   },
 
-  created() {
-    this.getParams();
-    if (this.params) {
-      this.getContact();
-    }
-  },
-  methods: {
-    getParams() {
-      const prs: any = Number(this.$route.params.id);
-      this.params = prs;
-      console.log("params");
-      return this.params;
-    },
-    async getContact() {
-      await axios(
-        ` https://random-data-api.com/api/users/random_user?id=${this.params}`
-      ).then((res) => {
-        this.contact = res.data;
-        return this.contact;
-      });
-    },
-  },
+  // created() {
+  //   this.getParams();
+  //   if (this.params) {
+  //     this.getContact();
+  //   }
+  // },
+  // methods: {
+  //   getParams() {
+  //     const prs: any = Number(this.$route.params.id);
+  //     this.params = prs;
+  //     console.log("params");
+  //     return this.params;
+  //   },
+  //   async getContact() {
+  //     await axios(
+  //       ` https://random-data-api.com/api/users/random_user?id=${this.params}`
+  //     ).then((res) => {
+  //       this.contact = res.data;
+  //       return this.contact;
+  //     });
+  //   },
+  // },
 });
 </script>
