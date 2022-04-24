@@ -65,8 +65,10 @@
                       >Job</v-card-item-subtitle
                     >
                     <div class="my-0">
-                      <v-icon class="mr-2 mb-2"> mdi-briefcase </v-icon>
-                      {{ contact.employment.title }}
+                      <div v-if="contact.employment">
+                        <v-icon class="mr-2 mb-2"> mdi-briefcase </v-icon>
+                        {{ contact.employment.title }}
+                      </div>
                     </div>
                   </v-card-text>
                 </div>
